@@ -1,6 +1,6 @@
-# Flask App - DevOps Project Template
+# Health Calculator Service
 
-This repository serves as a template for a simple Flask-based DevOps project. The app provides basic calculator functionalities (addition and subtraction) and includes all necessary files for setting up a local environment, running tests, and deploying to a cloud service with best practices in DevOps.
+This repository contains a Flask-based service for calculating Body Mass Index (BMI) and Basal Metabolic Rate (BMR). The application is structured to follow DevOps best practices, providing a foundation for local development, testing, and deployment in a production-ready environment.
 
 ## Project Structure
 
@@ -8,49 +8,50 @@ The repository is organized as follows:
 
 ```plaintext
 HEALTH-CALCULATOR-SERVICE/
-├── app.py
-├── health_utils.py
-├── test.py
-├── requirements.txt
-├── Makefile
-├── Dockerfile
+├── app.py              # Flask REST API for BMI and BMR calculations
+├── health_utils.py     # Utility functions for BMI and BMR logic
+├── test.py             # Unit tests for the service
+├── requirements.txt    # Python dependencies
+├── Makefile            # Commands for managing the project
+├── Dockerfile          # Docker configuration for containerizing the app
 ├── templates/
-│   └── home.html
-├── .env
-├── .gitignore
+│   └── home.html       # HTML template for the web interface
+├── .env                # Environment variables (excluded from version control)
+├── .gitignore          # Files and directories ignored by Git
+
 ```
 
 ### File Descriptions
 
-- **`app.py`**: The main application file for the Flask app. It sets up routes and connects them to functions in `utils.py` to provide API endpoints for app operations.
+- **`app.py`**: Main Flask application file. It defines the REST API endpoints for calculating BMI and BMR, rendering templates, and handling requests.
+- **`health_utils.py`**: Implements the core BMI and BMR calculation logic.
+- **`test.py`**: Unit tests to verify the correctness of the BMI and BMR calculations.
+- **`requirements.txt`**: Contains Python libraries needed to run the application.
+- **`Makefile`**: Simplifies common development tasks:
+    - `make init`: Install dependencies.
+    - `make run`: Start the Flask server.
+    - `make test`: Run unit tests.
+**`Dockerfile`**: Specifies the environment for building and running the app in a Docker container.
+- **`templates/home.html`**: Web interface for interacting with the BMI and BMR calculator.
+- **`.env`**:  Stores environment variables (e.g., FLASK_DEBUG, PORT) for development and production settings.
+- **`.gitignore`**: Lists files and directories to exclude from version control, such as .env and Python caches.
 
-- **`utils.py`**: Contains utility functions for core operations like addition and subtraction. This file is designed to house the main logic for the app’s functionality.
-
-- **`test.py`**: A unit test file that includes tests for the functions defined in `utils.py`. This file ensures that the core functionality behaves as expected.
-
-- **`requirements.txt`**: Lists the Python dependencies needed to run the application. This file is used to install the necessary packages in the project environment.
-
-- **`Makefile`**: A makefile to streamline project setup and operations. Includes commands for:
-  - `make init`: Install project dependencies.
-  - `make run`: Start the Flask app.
-  - `make test`: Run all unit tests.
-
-- **`templates/home.html`**: HTML template for the app's user interface. This file provides input fields and buttons for interacting with the calculator operations.
-
-- **`.env`**: A configuration file for environment variables. It’s used to securely store sensitive information (like API keys, database credentials, or environment-specific settings). **Note**: This file should not be committed to version control for security reasons.
-
-- **`.gitignore`**: Specifies files and directories that should be ignored by Git. It typically includes files such as `.env` and compiled Python files (`__pycache__`), as well as local environment and dependency caches.
+ Specifies files and directories that should be ignored by Git. It typically includes files such as `.env` and compiled Python files (`__pycache__`), as well as local environment and dependency caches.
 
 ## Getting Started
 
 1. **Clone the Repository**:
    ```bash
    git clone <repository-url>
-   cd DEVOPS-PROJECT
+   cd health-calculator-service
    ```
 
 2. **Set Up the Environment**:
    - Create and activate a virtual environment (recommended for managing dependencies).
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate
+   ```
    - Install the dependencies:
      ```bash
      make init
@@ -81,9 +82,4 @@ For deployment, configure CI/CD pipelines according to your preferred platform (
 
 ## Author
 
-This template was created by **Ali Mokh** and is intended as an educational resource for DevOps projects involving Flask applications.
-
-## License and Usage
-
-This project template is open to use by anyone and may be freely adapted for personal or professional projects. If you use this template as part of teaching materials or educational content, please cite **Ali Mokh** as the original author.
-
+This template was copied and updated by **Abdelillah Hemaz** and is intended as an educational resource for DevOps projects involving Flask applications.
