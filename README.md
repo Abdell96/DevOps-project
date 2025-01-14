@@ -38,24 +38,35 @@ HEALTH-CALCULATOR-SERVICE/
 
  Specifies files and directories that should be ignored by Git. It typically includes files such as `.env` and compiled Python files (`__pycache__`), as well as local environment and dependency caches.
 
+## Makefile Commands
+The Makefile provides the following commands for convenience:
+| Command         | Description                                                              |
+|-----------------|--------------------------------------------------------------------------|
+| `make help`     | Display a list of available commands.                                    |
+| `make init`     | Set up the environment and install dependencies.                         |
+| `make install`  | Install Python dependencies from `requirements.txt`.                     |
+| `make build`    | Build the Docker image.                                                  |
+| `make rn`       | Run the Flask app locally.                                               |
+| `make test`     | Run unit tests with `pytest`.                                            |
+| `make test-api` | Test the API endpoints using `curl`. Requires the app to be running.     |
+| `make clean`    | Remove Python cache files.                                               |
+| `make docker-run` | Run the application in a Docker container.                            |
+| `make docker-test` | Run unit tests inside the Docker container.                          |
+
+
 ## Getting Started
 
 1. **Clone the Repository**:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/Abdell96/HEALTH-CALCULATOR-SERVICE.git
    cd health-calculator-service
    ```
 
 2. **Set Up the Environment**:
    - Create and activate a virtual environment (recommended for managing dependencies).
    ```bash
-   python3 -m venv venv
-   source venv/bin/activate
+   make init
    ```
-   - Install the dependencies:
-     ```bash
-     make init
-     ```
 
 3. **Run the Application**:
    - Start the Flask app locally:
@@ -63,17 +74,61 @@ HEALTH-CALCULATOR-SERVICE/
      make run
      ```
 
-
 4. **Run Tests**:
    - Execute unit tests to verify functionality:
      ```bash
      make test
      ```
 
-## Additional Configuration
+##  Docker Setup
 
-- **Environment Variables**:
-  - Use the `.env` file to store any environment-specific configurations or sensitive information. Be sure to keep this file out of version control by listing it in `.gitignore`.
+1. **Build the Docker Image**:
+
+ ```bash
+ make build
+ ```
+
+2. **Run the Application in Docker**:
+
+```bash
+make docker-run
+```
+3. **Test the Application in Docker**:
+
+```bash
+make docker-test
+```
+
+## Testing the API Endpoints
+To test the API endpoints, you can use the following make test-api command, which will automatically run the tests for the BMI and BMR calculation endpoints. Ensure the app is running before running this command.
+
+```bash
+make test-api
+```
+This will run the following tests for the API endpoints:
+
+  - Test BMI Calculation:
+
+```bash
+curl -X POST http://localhost:5000/bmi \
+  -H "Content-Type: application/json" \
+  -d '{"height": 1.75, "weight": 70}'
+```
+
+  - Test BMR Calculation:
+
+```bash
+curl -X POST http://localhost:5000/bmr \
+  -H "Content-Type: application/json" \
+  -d '{"height": 175, "weight": 70, "age": 30, "gender": "male"}'
+```
+
+## Additional Notes
+
+- Ensure the .env file contains any necessary environment-specific configurations.
+- Use make clean to remove Python cache files to avoid conflicts during development.
+- For deployment, adapt the Dockerfile and CI/CD pipeline configuration as needed.
+
 
 ## Deployment Instructions
 
