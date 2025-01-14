@@ -7,12 +7,13 @@ This repository serves as a template for a simple Flask-based DevOps project. Th
 The repository is organized as follows:
 
 ```plaintext
-DEVOPS-PROJECT/
+HEALTH-CALCULATOR-SERVICE/
 ├── app.py
-├── utils.py
+├── health_utils.py
 ├── test.py
 ├── requirements.txt
 ├── Makefile
+├── Dockerfile
 ├── templates/
 │   └── home.html
 ├── .env

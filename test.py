@@ -1,29 +1,29 @@
 import unittest
-from utils import calculate_monthly_payment, calculate_total_cost
+from health_utils import calculate_bmi, calculate_bmr
+from app import app
+import json
 
-class TestLoanCalculatorUtils(unittest.TestCase):
-    def test_calculate_monthly_payment_with_interest(self):
-        loan_amount = 10000
-        duration_years = 5
-        annual_interest_rate = 5
-        expected_payment = 188.71
-        result = calculate_monthly_payment(loan_amount, duration_years, annual_interest_rate)
-        self.assertAlmostEqual(result, expected_payment, places=2)
-
-    def test_calculate_monthly_payment_no_interest(self):
-        loan_amount = 10000
-        duration_years = 5
-        annual_interest_rate = 0
-        expected_payment = 166.67
-        result = calculate_monthly_payment(loan_amount, duration_years, annual_interest_rate)
-        self.assertAlmostEqual(result, expected_payment, places=2)
-
-    def test_calculate_total_cost(self):
-        monthly_payment = 188.71
-        duration_years = 5
-        expected_total_cost = 11322.6
-        result = calculate_total_cost(monthly_payment, duration_years)
-        self.assertAlmostEqual(result, expected_total_cost, places=2)
+class TestHealthCalculator(unittest.TestCase):
+    def setUp(self):
+        self.app = app.test_client()
+        self.app.testing = True
+    
+    def test_calculate_bmi(self):
+        self.assertAlmostEqual(calculate_bmi(1.75, 70), 22.86, places=2)
+        with self.assertRaises(ValueError):
+            calculate_bmi(0, 70)
+    
+    def test_calculate_bmr(self):
+        self.assertAlmostEqual(
+            calculate_bmr(175, 70, 30, 'male'),  # Inputs: height, weight, age, gender
+            1695.67,  # Correct expected BMR value
+            places=2  # Allowing comparison with 2 decimal places
+        )
+        self.assertAlmostEqual(
+            calculate_bmr(165, 55, 25, 'female'),
+            1359.10,
+            places=2
+        )
 
 if __name__ == '__main__':
     unittest.main()

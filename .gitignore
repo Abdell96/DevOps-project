@@ -1,2 +1,12 @@
 script.sh
 .venv/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+.env.local
+.env.*.local
+.pytest_cache/
+.coverage
