@@ -38,8 +38,7 @@ test:
 # Run API tests using curl
 test-api:
 	@echo "Starting the application..."
-	@python app.py & # Start the app in the background
-	@sleep 2 # Wait for the app to initialize
+	@(python app.py > /dev/null 2>&1 & echo $$! > .flask.pid) & sleep 2
 	@echo "Testing BMI endpoint..."
 	@curl -X POST http://localhost:5000/bmi \
 		-H "Content-Type: application/json" \
@@ -49,7 +48,11 @@ test-api:
 		-H "Content-Type: application/json" \
 		-d '{"height": 175, "weight": 70, "age": 30, "gender": "male"}'
 	@echo "\nStopping the application..."
-	@PID=$$(pgrep -f "python app.py") && kill $$PID || true
+	@if [ -f .flask.pid ]; then \
+		kill `cat .flask.pid` 2>/dev/null || true; \
+		rm .flask.pid; \
+	fi
+	@exit 0
 
 # Clean up temporary and compiled files
 clean:
