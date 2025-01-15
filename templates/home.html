@@ -5,153 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Health Calculator</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .calculator {
-            margin-bottom: 30px;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .result {
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #f0f0f0;
-            display: none;
-        }
-    </style>
-</head>
-<body>
-    <h1>Health Calculator</h1>
-    
-    <div class="calculator">
-        <h2>BMI Calculator</h2>
-        <form id="bmiForm">
-            <div>
-                <label for="height">Height (meters):</label>
-                <input type="number" id="height" step="0.01" required>
-            </div>
-            <div>
-                <label for="weight">Weight (kg):</label>
-                <input type="number" id="weight" step="0.1" required>
-            </div>
-            <button type="submit">Calculate BMI</button>
-        </form>
-        <div id="bmiResult" class="result"></div>
-    </div>
-    
-    <div class="calculator">
-        <h2>BMR Calculator</h2>
-        <form id="bmrForm">
-            <div>
-                <label for="bmrHeight">Height (cm):</label>
-                <input type="number" id="bmrHeight" required>
-            </div>
-            <div>
-                <label for="bmrWeight">Weight (kg):</label>
-                <input type="number" id="bmrWeight" step="0.1" required>
-            </div>
-            <div>
-                <label for="age">Age:</label>
-                <input type="number" id="age" required>
-            </div>
-            <div>
-                <label for="gender">Gender:</label>
-                <select id="gender" required>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                </select>
-            </div>
-            <button type="submit">Calculate BMR</button>
-        </form>
-        <div id="bmrResult" class="result"></div>
-    </div>
-
-    <script>
-        document.getElementById('bmiForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const height = document.getElementById('height').value;
-            const weight = document.getElementById('weight').value;
-            
-            try {
-                const response = await fetch('/bmi', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ height, weight }),
-                });
-                
-                const data = await response.json();
-                const resultDiv = document.getElementById('bmiResult');
-                resultDiv.style.display = 'block';
-                
-                if (response.ok) {
-                    resultDiv.innerHTML = `
-                        <p>Your BMI: ${data.bmi}</p>
-                        <p>Category: ${data.category}</p>
-                    `;
-                } else {
-                    resultDiv.innerHTML = `<p>Error: ${data.error}</p>`;
-                }
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        });
-
-        document.getElementById('bmrForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const height = document.getElementById('bmrHeight').value;
-            const weight = document.getElementById('bmrWeight').value;
-            const age = document.getElementById('age').value;
-            const gender = document.getElementById('gender').value;
-            
-            try {
-                const response = await fetch('/bmr', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ height, weight, age, gender }),
-                });
-                
-                const data = await response.json();
-                const resultDiv = document.getElementById('bmrResult');
-                resultDiv.style.display = 'block';
-                
-                if (response.ok) {
-                    resultDiv.innerHTML = `
-                        <p>Your BMR: ${data.bmr} calories/day</p>
-                        <p>Daily calorie needs:</p>
-                        <ul>
-                            <li>Sedentary: ${data.daily_calories.sedentary} calories</li>
-                            <li>Light exercise: ${data.daily_calories.light_exercise} calories</li>
-                            <li>Moderate exercise: ${data.daily_calories.moderate_exercise} calories</li>
-                            <li>Heavy exercise: ${data.daily_calories.heavy_exercise} calories</li>
-                        </ul>
-                    `;
-                } else {
-                    resultDiv.innerHTML = `<p>Error: ${data.error}</p>`;
-                }
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        });
-    </script>
-</body>
-</html> -->
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Health Calculator</title>
-    <style>
         * {
             margin: 0;
             padding: 0;
@@ -396,6 +249,343 @@
                 } else {
                     resultDiv.innerHTML = `<p class="error">Error: ${data.error}</p>`;
                 }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+    </script>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Calculator</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f6f9fc 0%, #e9ecef 100%);
+            color: #2d3436;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+
+        h1 {
+            font-size: 42px;
+            background: linear-gradient(45deg, #20bf6b, #0984e3);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 40px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .calculator {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 550px;
+            margin-bottom: 30px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .calculator:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .calculator h2 {
+            color: #2d3436;
+            font-size: 28px;
+            margin-bottom: 25px;
+            text-align: center;
+            position: relative;
+        }
+
+        .calculator h2::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(45deg, #20bf6b, #0984e3);
+            border-radius: 2px;
+        }
+
+        label {
+            font-size: 16px;
+            color: #636e72;
+            margin-bottom: 12px;
+            display: block;
+            font-weight: 500;
+        }
+
+        input[type="number"], select {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 20px;
+            border: 2px solid #dfe6e9;
+            border-radius: 12px;
+            font-size: 16px;
+            background-color: #f8f9fa;
+            transition: all 0.3s ease;
+        }
+
+        input[type="number"]:focus, select:focus {
+            border-color: #0984e3;
+            box-shadow: 0 0 0 3px rgba(9, 132, 227, 0.1);
+            outline: none;
+        }
+
+        button {
+            background: linear-gradient(45deg, #20bf6b, #0984e3);
+            color: white;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(32, 191, 107, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .result {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #f6ffed 0%, #e6f7ff 100%);
+            border-left: 5px solid #20bf6b;
+            display: none;
+            opacity: 0;
+            transition: all 0.5s ease;
+        }
+
+        .result p {
+            font-size: 18px;
+            color: #2d3436;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .result ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .result ul li {
+            font-size: 16px;
+            color: #2d3436;
+            padding: 8px 0;
+            border-bottom: 1px dashed rgba(0, 0, 0, 0.1);
+        }
+
+        .result ul li:last-child {
+            border-bottom: none;
+        }
+
+        .error {
+            color: #e74c3c;
+            background: #fff3f3;
+            border-left-color: #e74c3c;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .result.show {
+            display: block;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 32px;
+            }
+
+            .calculator {
+                padding: 25px;
+            }
+
+            .calculator h2 {
+                font-size: 24px;
+            }
+
+            button {
+                font-size: 16px;
+                padding: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Health Calculator</h1>
+    
+    <div class="calculator">
+        <h2>BMI Calculator</h2>
+        <form id="bmiForm">
+            <div>
+                <label for="height">Height (meters)</label>
+                <input type="number" id="height" step="0.01" required placeholder="Enter your height">
+            </div>
+            <div>
+                <label for="weight">Weight (kg)</label>
+                <input type="number" id="weight" step="0.1" required placeholder="Enter your weight">
+            </div>
+            <button type="submit">Calculate BMI</button>
+        </form>
+        <div id="bmiResult" class="result"></div>
+    </div>
+    
+    <div class="calculator">
+        <h2>BMR Calculator</h2>
+        <form id="bmrForm">
+            <div>
+                <label for="bmrHeight">Height (cm)</label>
+                <input type="number" id="bmrHeight" required placeholder="Enter your height">
+            </div>
+            <div>
+                <label for="bmrWeight">Weight (kg)</label>
+                <input type="number" id="bmrWeight" step="0.1" required placeholder="Enter your weight">
+            </div>
+            <div>
+                <label for="age">Age</label>
+                <input type="number" id="age" required placeholder="Enter your age">
+            </div>
+            <div>
+                <label for="gender">Gender</label>
+                <select id="gender" required>
+                    <option value="" disabled selected>Select your gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+            </div>
+            <button type="submit">Calculate BMR</button>
+        </form>
+        <div id="bmrResult" class="result"></div>
+    </div>
+
+    <script>
+        document.getElementById('bmiForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const height = document.getElementById('height').value;
+            const weight = document.getElementById('weight').value;
+            const resultDiv = document.getElementById('bmiResult');
+            
+            try {
+                const response = await fetch('/bmi', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ height, weight }),
+                });
+                
+                const data = await response.json();
+                resultDiv.className = 'result';
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = `
+                        <p style="font-size: 24px; font-weight: 600; color: #20bf6b;">
+                            Your BMI: ${data.bmi}
+                        </p>
+                        <p style="font-size: 20px; color: #2d3436;">
+                            Category: ${data.category}
+                        </p>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `<p class="error">Error: ${data.error}</p>`;
+                }
+                resultDiv.classList.add('show');
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+
+        document.getElementById('bmrForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const height = document.getElementById('bmrHeight').value;
+            const weight = document.getElementById('bmrWeight').value;
+            const age = document.getElementById('age').value;
+            const gender = document.getElementById('gender').value;
+            const resultDiv = document.getElementById('bmrResult');
+            
+            try {
+                const response = await fetch('/bmr', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ height, weight, age, gender }),
+                });
+                
+                const data = await response.json();
+                resultDiv.className = 'result';
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = `
+                        <p style="font-size: 24px; font-weight: 600; color: #20bf6b;">
+                            Your BMR: ${data.bmr} calories/day
+                        </p>
+                        <p style="font-size: 20px; margin: 15px 0; color: #2d3436;">
+                            Daily calorie needs:
+                        </p>
+                        <ul style="background: white; padding: 15px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                            <li style="display: flex; justify-content: space-between; padding: 12px 0;">
+                                <span>Sedentary</span>
+                                <strong>${data.daily_calories.sedentary} calories</strong>
+                            </li>
+                            <li style="display: flex; justify-content: space-between; padding: 12px 0;">
+                                <span>Light exercise</span>
+                                <strong>${data.daily_calories.light_exercise} calories</strong>
+                            </li>
+                            <li style="display: flex; justify-content: space-between; padding: 12px 0;">
+                                <span>Moderate exercise</span>
+                                <strong>${data.daily_calories.moderate_exercise} calories</strong>
+                            </li>
+                            <li style="display: flex; justify-content: space-between; padding: 12px 0;">
+                                <span>Heavy exercise</span>
+                                <strong>${data.daily_calories.heavy_exercise} calories</strong>
+                            </li>
+                        </ul>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `<p class="error">Error: ${data.error}</p>`;
+                }
+                resultDiv.classList.add('show');
             } catch (error) {
                 console.error('Error:', error);
             }
