@@ -49,8 +49,8 @@ test-api:
 		-H "Content-Type: application/json" \
 		-d '{"height": 175, "weight": 70, "age": 30, "gender": "male"}'
 	@echo "\nStopping the application..."
-	@pkill -f "python app.py" # Stop the app
-	
+	@PID=$$(pgrep -f "python app.py") && kill $$PID || true
+
 # Clean up temporary and compiled files
 clean:
 	find . -type f -name "*.pyc" -delete
