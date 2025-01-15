@@ -23,15 +23,6 @@ jobs:
       - name: Install dependencies
         run: make install
 
-  test-and-build:
-    runs-on: ubuntu-latest
-    needs: setup-environment
-
-    steps:
-      # Checkout the code
-      - name: Checkout code
-        uses: actions/checkout@v3
-
       # Run unit tests
       - name: Run unit tests
         run: make test
