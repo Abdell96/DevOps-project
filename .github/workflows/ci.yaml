@@ -1,0 +1,87 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+#  pull_request:
+#    branches:
+#      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Set up Python environment
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.10
+
+      # Install dependencies using Makefile
+      - name: Install dependencies
+        run: make install
+
+      # Run unit tests using Makefile
+      - name: Run unit tests
+        run: make test
+
+  test-api:
+    runs-on: ubuntu-latest
+    needs: build-and-test
+
+    steps:
+      # Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Set up Python environment
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.10
+
+      # Install dependencies using Makefile
+      - name: Install dependencies
+        run: make install
+
+      # Start the app
+      - name: Start the app
+        run: |
+          nohup python app.py &
+
+      # Wait for the app to be ready
+      - name: Wait for the app to start
+        run: sleep 10
+
+      # Test API Endpoints using Makefile
+      - name: Test API Endpoints
+        run: make test-api
+
+  docker:
+    runs-on: ubuntu-latest
+    needs: build-and-test
+
+    steps:
+      # Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Build Docker Image using Makefile
+      - name: Build Docker Image
+        run: make docker-build
+
+      # Test Docker Image using Makefile
+      - name: Test Docker Image
+        run: |
+          make docker-run &
+          sleep 10
+          make test-api
+          docker stop $(docker ps -q --filter "ancestor=health-calculator:latest")
+          docker rm $(docker ps -aq --filter "ancestor=health-calculator:latest")
+
