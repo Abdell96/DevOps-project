@@ -8,6 +8,10 @@ The repository is organized as follows:
 
 ```plaintext
 HEALTH-CALCULATOR-SERVICE/
+├── .github/
+│   └── workflows/
+│       ├── ci.yaml               # GitHub Actions CI pipeline
+│       └── main_app-python25.yml # Azure deployment workflow
 ├── app.py              # Flask REST API for BMI and BMR calculations
 ├── health_utils.py     # Utility functions for BMI and BMR logic
 ├── test.py             # Unit tests for the service
@@ -132,8 +136,23 @@ curl -X POST http://localhost:5000/bmr \
 
 ## Deployment Instructions
 
-For deployment, configure CI/CD pipelines according to your preferred platform (e.g., GitHub Actions, Azure Pipelines). This template can be used with cloud deployment platforms like AWS, Azure, or Heroku for easy scalability.
-  - Use `pipeline.yaml` as a template for a pipeline to build and deploy an application on Azure
+## Continuous Integration and Deployment
+GitHub Actions CI Pipeline
+The project uses GitHub Actions for continuous integration, defined in .github/workflows/ci.yaml. The pipeline:
+
+- Runs automated tests
+- Performs code quality checks
+- Builds the Docker container
+- Ensures the application meets quality standards before deployment
+
+## Azure Cloud Deployment
+The application is deployed to Azure Cloud using the workflow defined in .github/workflows/main_app-python25.yml. This workflow:
+
+- Automatically deploys to Azure App Service
+- Manages the build and deployment process
+- Ensures consistent deployment across environments
+
+link to the app : [text](https://app-python25-ehcpcchabwfkhzdx.francecentral-01.azurewebsites.net/)
 
 ## Author
 
