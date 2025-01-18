@@ -152,7 +152,7 @@ The application is deployed to Azure Cloud using the workflow defined in .github
 - Manages the build and deployment process
 - Ensures consistent deployment across environments
 
-link to the app : [text](https://app-python25-ehcpcchabwfkhzdx.francecentral-01.azurewebsites.net/)
+link to the app : [My-App-python25](https://app-python25-ehcpcchabwfkhzdx.francecentral-01.azurewebsites.net/)
 
 ## Author
 
